@@ -6,6 +6,9 @@ import react from "@vitejs/plugin-react-swc";
 // https://vitejs.dev/config/
 export default defineConfig({
   plugins: [react()],
+  server: {
+    port: 3000,
+  },
   test: {
     globals: true,
     environment: "jsdom",
@@ -15,6 +18,7 @@ export default defineConfig({
     coverage: {
       provider: "v8",
       include: ["src/**/*.tsx", "src/**/*.ts", "!src/main.tsx"],
+      reporter: ["text", "lcov"],
       all: true,
     },
   },
