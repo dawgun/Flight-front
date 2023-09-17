@@ -1,0 +1,33 @@
+.flight-listing {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  padding: 0 16px;
+  max-width: 925px;
+}
+
+.flight-listing__title{
+  font-size: 50px;
+  font-weight: bold;
+  color: #033652;
+  text-transform: uppercase;
+}
+
+.flight-listing__description {
+  color: #4d4d4d;
+    font-size: 20px;
+}
+
+.flight-listing__from, .flight-listing__to {
+  display: inline-block;
+  width: 300px;
+  font-size: 30px;
+    padding: 0 16px;
+  color: #033652;
+  font-weight: bold;
+}
+
+.flight-listing__direction-container {
+  display: grid;
+  grid-template-columns: 53% auto
+}
