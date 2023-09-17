@@ -16,3 +16,6 @@ jobs:
 
       - name: Testing
         run: npm test
+
+        env:
+          VITE_BACKEND_HOST: ${{ env.VITE_BACKEND_HOST }}
