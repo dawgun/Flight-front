@@ -6,7 +6,7 @@
   max-width: 925px;
 }
 
-.flight-listing__title{
+.flight-listing__title {
   font-size: 50px;
   font-weight: bold;
   color: #033652;
@@ -15,19 +15,20 @@
 
 .flight-listing__description {
   color: #4d4d4d;
-    font-size: 20px;
+  font-size: 20px;
 }
 
-.flight-listing__from, .flight-listing__to {
+.flight-listing__from,
+.flight-listing__to {
   display: inline-block;
   width: 300px;
   font-size: 30px;
-    padding: 0 16px;
+  padding: 0 16px;
   color: #033652;
   font-weight: bold;
 }
 
 .flight-listing__direction-container {
   display: grid;
-  grid-template-columns: 53% auto
+  grid-template-columns: 53% auto;
 }

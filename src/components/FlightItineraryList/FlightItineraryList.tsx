@@ -17,7 +17,7 @@ function FlightItineraryList() {
         <span className={"flight-listing__to"}>To:</span>
       </div>
       <ul>
-        {listOfFlights.map((flight) => (
+        {listOfFlights.slice(0, 8).map((flight) => (
           <FlightItinerary key={flight.id} flight={flight} />
         ))}
       </ul>
