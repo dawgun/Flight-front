@@ -17,6 +17,8 @@ jobs:
         run: npm ci
       - name: Run coverage
         run: npm run test:coverage
+        env:
+          VITE_BACKEND_HOST: ${{ secrets.VITE_BACKEND_HOST }}
       - name: SonarCloud Scan
         uses: SonarSource/sonarcloud-github-action@master
         env:
