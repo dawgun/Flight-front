@@ -39,3 +39,15 @@ export const mockFlight = () => flightFactory.build();
 export const mockCustomFlight = (flight: Partial<Flight>) =>
   flightFactory.build(flight);
 export const mockFlights = () => flightFactory.buildList(numberOfFlights);
+export const mockFlightAirport = (
+  originAirport: Partial<Airport>,
+  destinationAirport?: Partial<Airport>
+) =>
+  flightFactory.build({
+    route: {
+      airports: [
+        airportFactory.build(originAirport),
+        airportFactory.build(destinationAirport),
+      ],
+    },
+  });

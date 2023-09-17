@@ -1,0 +1,39 @@
+.flight-itinerary {
+  font-size: 15px;
+  color: #4d4d4d;
+  align-items: center;
+  justify-content: space-between;
+  display: flex;
+  height: 48px;
+  width: 100%;
+  margin: 25px 0 0 0;
+  border-radius: 8px 8px 8px 8px;
+  padding: 0 16px;
+  background-color: #fff;
+  box-shadow: 5px 5px 5px rgba(0, 0, 0, 0.3);
+}
+
+.flight-itinerary__time-container,
+.flight-itinerary__container {
+  display: flex;
+  align-items: center;
+}
+
+.flight-itinerary__container {
+  gap: 16px;
+  width: 250px;
+  justify-content: space-between;
+}
+
+.flight-itinerary__country {
+  width: 150px;
+}
+
+.flight--selected {
+  background-color: #056c8a;
+  color: #fff;
+}
+
+.flight--selected img {
+  filter: brightness(0) invert(1);
+}
