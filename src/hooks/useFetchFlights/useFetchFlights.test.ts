@@ -6,10 +6,13 @@ import useFlightsStore from "../../store/useFlightsStore/useFlightsStore.js";
 import { Mock } from "vitest";
 import { toast } from "react-toastify";
 
+beforeEach(() => {
+  mockFlightStore();
+});
+
 describe("GIVEN the useFetchFlights custom hook", () => {
   describe("WHEN call the getFlights function with fetch error", () => {
     test("THEN shouldn't call loadFlights function the list of flights received", async () => {
-      mockFlightStore();
       const { loadFlights } = useFlightsStore.getState();
 
       const { result } = renderHook(() => useFetchFlights());
@@ -19,7 +22,6 @@ describe("GIVEN the useFetchFlights custom hook", () => {
     });
 
     test("THEN shouldn't call loadFlights function the list of flights received", async () => {
-      mockFlightStore();
       const expectedToastError = "Error loading flights";
 
       const { result } = renderHook(() => useFetchFlights());
@@ -31,7 +33,6 @@ describe("GIVEN the useFetchFlights custom hook", () => {
 
   describe("WHEN call the getFlights function with correct fetch", () => {
     test("THEN should call loadFlights function the list of flights received", async () => {
-      mockFlightStore();
       const { loadFlights } = useFlightsStore.getState();
 
       const { result } = renderHook(() => useFetchFlights());
@@ -43,7 +44,6 @@ describe("GIVEN the useFetchFlights custom hook", () => {
     });
 
     test("THEN should call toast with 'Flights Loaded'", async () => {
-      mockFlightStore();
       const expectedSuccessToast = "Flights Loaded";
 
       const { result } = renderHook(() => useFetchFlights());
