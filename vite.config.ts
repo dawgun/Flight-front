@@ -17,7 +17,12 @@ export default defineConfig({
     include: ["src/**/*.test.tsx", "src/**/*.test.ts"],
     coverage: {
       provider: "v8",
-      include: ["src/**/*.tsx", "src/**/*.ts", "!src/main.tsx"],
+      include: [
+        "src/**/*.tsx",
+        "src/**/*.ts",
+        "!src/main.tsx",
+        "!src/store/useFlightsStore/types/flightTypes.ts",
+      ],
       reporter: ["text", "lcov"],
       all: true,
     },
