@@ -18,4 +18,4 @@ jobs:
         run: npm test
 
         env:
-          VITE_BACKEND_HOST: ${{ env.VITE_BACKEND_HOST }}
+          VITE_BACKEND_HOST: ${{ secrets.VITE_BACKEND_HOST }}
