@@ -1,0 +1,19 @@
+.flight-status-container{
+    display: flex;
+    flex-direction: column;
+}
+.flight-path-container {
+    display: flex;
+    gap: 18px;
+}
+.flight-id {
+    font-size: 40px;
+    font-weight: bold;
+    color: #056C8A;
+    text-transform: uppercase;
+}
+.flight-journey{
+    color: #4d4d4d;
+    font-weight: bold;
+    font-size: 20px;
+}
