@@ -7,7 +7,7 @@ import { Mock } from "vitest";
 import { toast } from "react-toastify";
 
 beforeEach(() => {
-  mockFlightStore();
+  mockFlightStore({});
 });
 
 describe("GIVEN the useFetchFlights custom hook", () => {

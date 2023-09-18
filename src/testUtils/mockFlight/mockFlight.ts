@@ -35,6 +35,8 @@ const flightFactory = Factory.define<Flight>(() => ({
   waypoints: waypointFactory.buildList(2),
 }));
 
+export const mockAirport = (airport?: Partial<Airport>) =>
+  airportFactory.build(airport);
 export const mockFlight = () => flightFactory.build();
 export const mockCustomFlight = (flight: Partial<Flight>) =>
   flightFactory.build(flight);

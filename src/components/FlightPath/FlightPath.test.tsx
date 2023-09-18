@@ -8,7 +8,7 @@ describe("GIVEN the FlightPath component", () => {
       const titleText = "Departure";
       const flight = mockFlight();
 
-      render(<FlightPath flight={flight} planeName={titleText} />);
+      render(<FlightPath flight={flight} title={titleText} />);
 
       const title = screen.getByRole("heading", { name: titleText, level: 4 });
 
@@ -21,7 +21,7 @@ describe("GIVEN the FlightPath component", () => {
       const time = new Date(flight.departureDate).toUTCString();
       const originAirport = flight.route.airports[0];
 
-      render(<FlightPath planeName={titleText} flight={flight} />);
+      render(<FlightPath title={titleText} flight={flight} />);
 
       const cityElement = screen.getByText(originAirport.city);
       const airportElement = screen.getByText(originAirport.name);
@@ -38,7 +38,7 @@ describe("GIVEN the FlightPath component", () => {
       const titleText = "Arrival";
       const flight = mockFlight();
 
-      render(<FlightPath flight={flight} planeName={titleText} />);
+      render(<FlightPath flight={flight} title={titleText} />);
 
       const title = screen.getByRole("heading", { name: titleText, level: 4 });
 
@@ -53,7 +53,7 @@ describe("GIVEN the FlightPath component", () => {
       const destinationAirport =
         flight.route.airports[flight.route.airports.length - 1];
 
-      render(<FlightPath planeName={titleText} flight={flight} />);
+      render(<FlightPath title={titleText} flight={flight} />);
 
       const cityElement = screen.getByText(destinationAirport.city);
       const airportElement = screen.getByText(destinationAirport.name);

@@ -7,6 +7,7 @@ describe("GIVEN the FlightItineraryList component", () => {
   describe("WHEN it's instanced", () => {
     test("THEN it should render the title with the text 'Flight listings'", () => {
       const titleText = "Flight listings";
+      mockFlightStore({});
 
       render(<FlightItineraryList />);
       const title = screen.getByRole("heading", { name: titleText, level: 1 });
@@ -15,7 +16,7 @@ describe("GIVEN the FlightItineraryList component", () => {
     });
 
     test("THEN it should render the two FlightItinerary component", () => {
-      mockFlightStore();
+      mockFlightStore({});
 
       render(<FlightItineraryList />);
       const flightItinerary = screen.getAllByTestId("flight-itinerary");
@@ -26,7 +27,7 @@ describe("GIVEN the FlightItineraryList component", () => {
     test("THEN it should render the text 'Barcelona'", () => {
       const destinationAirportText = "Barcelona";
       const flights = mockFlightAirport({ city: destinationAirportText });
-      mockFlightStore([flights]);
+      mockFlightStore({ flights: [flights] });
 
       render(<FlightItineraryList />);
       const destinationAirport = screen.getByText(destinationAirportText);
