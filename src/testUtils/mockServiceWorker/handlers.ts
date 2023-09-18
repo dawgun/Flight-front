@@ -5,15 +5,15 @@ const backend = import.meta.env.VITE_BACKEND_HOST;
 const flights = [mockFlight()];
 
 export const handlers = [
-  rest.get(`${backend}/flights`, async (req, res, ctx) => {
+  rest.get(`${backend}/flights`, async (_req, res, ctx) => {
     return res.once(ctx.status(400));
   }),
 
-  rest.get(`${backend}/flights`, async (req, res, ctx) => {
+  rest.get(`${backend}/flights`, async (_req, res, ctx) => {
     return res.once(ctx.status(400));
   }),
 
-  rest.get(`${backend}/flights`, async (req, res, ctx) => {
+  rest.get(`${backend}/flights`, async (_req, res, ctx) => {
     return res(ctx.status(200), ctx.json(flights));
   }),
 ];
