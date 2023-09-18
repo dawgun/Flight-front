@@ -1,0 +1,9 @@
+.flight-app {
+  padding: 55px 95px;
+  display: flex;
+  background-image: url("/assets/nubes fondo.svg");
+  background-position: top right;
+  background-repeat: no-repeat;
+  background-size: 450px;
+  gap: 74px;
+}
