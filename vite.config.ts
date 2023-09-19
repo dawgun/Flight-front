@@ -14,6 +14,7 @@ export default defineConfig({
     environment: "jsdom",
     setupFiles: "./jest-setup.ts",
     mockReset: true,
+    css: true,
     include: ["src/**/*.test.tsx", "src/**/*.test.ts"],
     coverage: {
       provider: "v8",
