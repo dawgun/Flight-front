@@ -43,6 +43,17 @@ describe("GIVEN the useFetchFlights custom hook", () => {
       expect(loadFlights).toHaveBeenCalledWith(expectedFlights);
     });
 
+    test("THEN should call selectFlight function with first flight of list", async () => {
+      const { selectFlight, loadFlights } = useFlightsStore.getState();
+
+      const { result } = renderHook(() => useFetchFlights());
+      await result.current.getFlights();
+
+      const expectedFlight = (loadFlights as Mock).mock.calls[0][0][0];
+
+      expect(selectFlight).toHaveBeenCalledWith(expectedFlight);
+    });
+
     test("THEN should call toast with 'Flights Loaded'", async () => {
       const expectedSuccessToast = "Flights Loaded";
 
