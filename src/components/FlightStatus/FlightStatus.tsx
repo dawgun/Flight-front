@@ -1,5 +1,5 @@
 import FlightPath from "../FlightPath/FlightPath.tsx";
-import useFlightsStore from "../../store/useFlightsStore/useFlightsStore.js";
+import useFlightsStore from "../../store/useFlightsStore/useFlightsStore.ts";
 import countryAcronymTransform from "../../utils/countryAcronymTransform/countryAcronymTransform.ts";
 import "./FlightStatus.css";
 
