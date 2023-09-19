@@ -1,4 +1,4 @@
-import "../../testUtils/mockReactTostify/mockReactTostify";
+import "../../testUtils/mockReactToastify/mockReactToastify";
 import { mockFlightStore } from "../../testUtils/mockUseFlightsStore/mockUseFlightsStore";
 import { renderHook } from "@testing-library/react";
 import useFetchFlights from "./useFetchFlights.js";
@@ -41,6 +41,17 @@ describe("GIVEN the useFetchFlights custom hook", () => {
       const expectedFlights = (loadFlights as Mock).mock.calls[0][0];
 
       expect(loadFlights).toHaveBeenCalledWith(expectedFlights);
+    });
+
+    test("THEN should call selectFlight function with first flight of list", async () => {
+      const { selectFlight, loadFlights } = useFlightsStore.getState();
+
+      const { result } = renderHook(() => useFetchFlights());
+      await result.current.getFlights();
+
+      const expectedFlight = (loadFlights as Mock).mock.calls[0][0][0];
+
+      expect(selectFlight).toHaveBeenCalledWith(expectedFlight);
     });
 
     test("THEN should call toast with 'Flights Loaded'", async () => {
