@@ -1,4 +1,4 @@
-import "../../testUtils/mockReactTostify/mockReactTostify";
+import "../../testUtils/mockReactToastify/mockReactToastify";
 import { mockFlightStore } from "../../testUtils/mockUseFlightsStore/mockUseFlightsStore";
 import { renderHook } from "@testing-library/react";
 import useFetchFlights from "./useFetchFlights.js";
