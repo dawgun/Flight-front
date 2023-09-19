@@ -2,6 +2,7 @@ export interface FlightStore {
   flights: Flight[];
   selectedFlight: Flight;
   loadFlights: (flights: Flight[]) => void;
+  selectFlight: (flight: Flight) => void;
 }
 
 export interface Flight {

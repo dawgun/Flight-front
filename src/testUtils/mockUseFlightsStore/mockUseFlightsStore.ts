@@ -9,6 +9,7 @@ const mockStore = (flights: Flight[], selectedFlight: Flight): FlightStore => ({
   flights: flights,
   selectedFlight: selectedFlight,
   loadFlights: vi.fn(),
+  selectFlight: vi.fn(),
 });
 
 const originalStore = useFlightsStore.getState();
