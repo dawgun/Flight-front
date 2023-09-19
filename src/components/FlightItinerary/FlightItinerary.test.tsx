@@ -1,10 +1,12 @@
 import { render, screen } from "@testing-library/react";
+import userEvent from "@testing-library/user-event";
 import {
   mockFlightAirport,
   mockFlight,
   mockCustomFlight,
 } from "../../testUtils/mockFlight/mockFlight.ts";
 import FlightItinerary from "./FlightItinerary.tsx";
+import { mockFlightStore } from "../../testUtils/mockUseFlightsStore/mockUseFlightsStore.ts";
 
 describe("GIVEN the FlightItinerary component", () => {
   describe("WHEN it's instanced with a flight", () => {
@@ -74,6 +76,46 @@ describe("GIVEN the FlightItinerary component", () => {
       const arrowIcons = screen.getByAltText(altText);
 
       expect(arrowIcons).toBeInTheDocument();
+    });
+
+    describe("AND user click in the itinerary", () => {
+      test("THEN should call the selectFlight function with the flight", async () => {
+        const divContainerId = "flight-itinerary";
+        const { selectFlight } = mockFlightStore({});
+        const flight = mockFlight();
+
+        render(<FlightItinerary flight={flight} />);
+
+        const flightItinerary = screen.getByTestId(divContainerId);
+        await userEvent.click(flightItinerary);
+
+        expect(selectFlight).toHaveBeenCalledWith(flight);
+      });
+    });
+
+    describe("AND in store is selected same flight", () => {
+      test("THEN is should render the div with class flight--selected and color #056C8A when the flight is selected", () => {
+        const divContainerId = "flight-itinerary";
+        const flight = mockFlight();
+        mockFlightStore({ selectedFlight: flight });
+
+        render(<FlightItinerary flight={flight} />);
+        const flightItinerary = screen.getByTestId(divContainerId);
+
+        expect(flightItinerary).toHaveStyle("background-color: #056C8A");
+      });
+    });
+
+    describe("AND in store is selected with different flight", () => {
+      test("THEN is should render the div with class flight--selected and color #fff when the flight is selected", () => {
+        const divContainerId = "flight-itinerary";
+        const flight = mockFlight();
+
+        render(<FlightItinerary flight={flight} />);
+        const flightItinerary = screen.getByTestId(divContainerId);
+
+        expect(flightItinerary).toHaveStyle("background-color: #fff");
+      });
     });
   });
 });

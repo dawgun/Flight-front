@@ -20,5 +20,8 @@ export const resetFlightStore = () => useFlightsStore.setState(originalStore);
 export const mockFlightStore = ({
   flights = listOfFlights,
   selectedFlight = flight,
-}: Omit<Partial<FlightStore>, "loadFlights">) =>
-  useFlightsStore.setState(mockStore(flights, selectedFlight));
+}: Omit<Partial<FlightStore>, "loadFlights">) => {
+  const store = mockStore(flights, selectedFlight);
+  useFlightsStore.setState(store);
+  return store;
+};
