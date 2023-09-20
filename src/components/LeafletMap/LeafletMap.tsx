@@ -6,7 +6,7 @@ import {
 } from "../../utils/mapConfig/mapConfig.js";
 import { Flight } from "../../store/useFlightsStore/types/flightTypes.js";
 import { LatLngTuple } from "leaflet";
-import { useRef, useEffect } from "react";
+import { useRef, useEffect, useState } from "react";
 import { Spline, spline } from "leaflet-spline";
 import useServerStreamStore from "../../store/useServerStreamStore/useServerStreamStore.js";
 import "leaflet/dist/leaflet.css";
@@ -18,7 +18,7 @@ interface MapProps {
 
 function LeafletMap({ flight }: MapProps) {
   const { planePosition, setPlanePosition } = useServerStreamStore();
-  const mapRef = useRef({} as L.Map);
+  const [mapLeaflet, setMapLeaflet] = useState({} as L.Map);
   const splineRef = useRef({} as Spline);
 
   useEffect(() => {
@@ -36,20 +36,20 @@ function LeafletMap({ flight }: MapProps) {
   });
 
   if (Object.keys(splineRef.current).length > 0) {
-    splineRef.current.removeFrom(mapRef.current);
+    splineRef.current.removeFrom(mapLeaflet!);
   }
 
-  if (Object.keys(mapRef.current).length > 0) {
+  if (Object.keys(mapLeaflet!).length > 0) {
     const pathLine = spline(pathFlight, splineOptions);
-    pathLine.addTo(mapRef.current);
+    pathLine.addTo(mapLeaflet!);
     splineRef.current = pathLine;
   }
 
   return (
     <div className={"map-container"}>
       <MapContainer
-        whenReady={(map) => {
-          mapRef.current = map.target;
+        ref={(map) => {
+          if (map !== null) setMapLeaflet(map);
         }}
         center={planePosition}
         zoom={2}
