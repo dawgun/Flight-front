@@ -8,15 +8,15 @@ import { Flight } from "../../store/useFlightsStore/types/flightTypes.js";
 import { LatLngTuple } from "leaflet";
 import { useRef, useEffect } from "react";
 import { Spline, spline } from "leaflet-spline";
-import "leaflet/dist/leaflet.css";
-import "./Map.css";
 import useServerStreamStore from "../../store/useServerStreamStore/useServerStreamStore.js";
+import "leaflet/dist/leaflet.css";
+import "./LeafletMap.css";
 
 interface MapProps {
   flight: Flight;
 }
 
-function Map({ flight }: MapProps) {
+function LeafletMap({ flight }: MapProps) {
   const { planePosition, setPlanePosition } = useServerStreamStore();
   const mapRef = useRef({} as L.Map);
   const splineRef = useRef({} as Spline);
@@ -74,4 +74,4 @@ function Map({ flight }: MapProps) {
   );
 }
 
-export default Map;
+export default LeafletMap;
