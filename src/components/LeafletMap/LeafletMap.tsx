@@ -9,17 +9,23 @@ import { LatLngTuple } from "leaflet";
 import { useRef, useEffect, useState } from "react";
 import { Spline, spline } from "leaflet-spline";
 import useServerStreamStore from "../../store/useServerStreamStore/useServerStreamStore.js";
+import play from "/assets/play-button.svg";
 import "leaflet/dist/leaflet.css";
 import "./LeafletMap.css";
+import useGetFlightPosition from "../../hooks/useGetFlightPosition/useGetFlightPosition.js";
 
 interface MapProps {
   flight: Flight;
 }
 
 function LeafletMap({ flight }: MapProps) {
-  const { planePosition, setPlanePosition } = useServerStreamStore();
+  const { startTrackFlight } = useGetFlightPosition();
+  const { planePosition, setPlanePosition, eventSource } =
+    useServerStreamStore();
+
   const [mapLeaflet, setMapLeaflet] = useState({} as L.Map);
   const splineRef = useRef({} as Spline);
+  const flightID = flight.id;
 
   useEffect(() => {
     const newPlanePosition: LatLngTuple = [
@@ -36,17 +42,31 @@ function LeafletMap({ flight }: MapProps) {
   });
 
   if (Object.keys(splineRef.current).length > 0) {
-    splineRef.current.removeFrom(mapLeaflet!);
+    splineRef.current.removeFrom(mapLeaflet);
   }
 
-  if (Object.keys(mapLeaflet!).length > 0) {
+  if (Object.keys(mapLeaflet).length > 0) {
     const pathLine = spline(pathFlight, splineOptions);
-    pathLine.addTo(mapLeaflet!);
+    pathLine.addTo(mapLeaflet);
     splineRef.current = pathLine;
   }
 
+  if (eventSource?.url?.includes("stream")) {
+    eventSource.onmessage = (event) => {
+      const flightApi = JSON.parse(event.data);
+      setPlanePosition([flightApi.latitude, flightApi.longitude]);
+    };
+  }
+
+  const startFlightHandler = () => {
+    startTrackFlight(flightID);
+  };
+
   return (
     <div className={"map-container"}>
+      <button onClick={startFlightHandler}>
+        <img src={play} height={30} width={30} alt={"play icon"}></img>
+      </button>
       <MapContainer
         ref={(map) => {
           if (map !== null) setMapLeaflet(map);

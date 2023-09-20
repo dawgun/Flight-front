@@ -2,6 +2,12 @@ import "@testing-library/jest-dom";
 import { server } from "./src/testUtils/mockServiceWorker/server";
 import { vi, beforeAll, beforeEach, afterAll, afterEach } from "vitest";
 import { resetFlightStore } from "./src/testUtils/mockUseFlightsStore/mockUseFlightsStore";
+import { resetServerStreamStore } from "./src/testUtils/mockUseServerStreamStore/mockUseServerStreamStore";
+import eventsource from "eventsource";
+
+Object.defineProperty(window, "EventSource", {
+  value: eventsource,
+});
 
 beforeAll(() => server.listen());
 
@@ -15,5 +21,6 @@ afterEach(() => server.resetHandlers());
 
 afterAll(() => {
   resetFlightStore();
+  resetServerStreamStore();
   server.close();
 });

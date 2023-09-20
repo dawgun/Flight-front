@@ -16,4 +16,20 @@ export const handlers = [
   rest.get(`${backend}/flights`, async (_req, res, ctx) => {
     return res(ctx.status(200), ctx.json(flights));
   }),
+
+  rest.get(`${backend}/flights/111/stream`, async (_req, res, ctx) => {
+    return res(ctx.status(200));
+  }),
+
+  rest.get(`${backend}/flights/112/stream`, async (_req, res, ctx) => {
+    return res(ctx.status(400));
+  }),
+
+  rest.put(`${backend}/flights/111/start`, async (_req, res, ctx) => {
+    return res(ctx.status(200));
+  }),
+
+  rest.put(`${backend}/flights/112/start`, async (_req, res, ctx) => {
+    return res(ctx.status(400));
+  }),
 ];
