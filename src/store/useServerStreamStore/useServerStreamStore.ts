@@ -1,5 +1,5 @@
 import { create } from "zustand";
-import { ServerStreamStore } from "./types/types";
+import { ServerStreamStore } from "./types/streamStoreTypes";
 
 const useServerStreamStore = create<ServerStreamStore>((set) => ({
   eventSource: {} as EventSource,

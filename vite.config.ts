@@ -23,6 +23,7 @@ export default defineConfig({
         "src/**/*.ts",
         "!src/main.tsx",
         "!src/store/useFlightsStore/types/flightTypes.ts",
+        "!src/store/useServerStreamStore/types/streamStoreTypes.ts",
       ],
       reporter: ["text", "lcov"],
       all: true,
