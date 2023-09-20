@@ -20,3 +20,10 @@ export const airportIcon = icon({
   shadowAnchor: [4, 62],
   className: "airport",
 });
+
+export const splineOptions = {
+  color: "black",
+  weight: 1,
+  smoothing: 0.1,
+  className: "map-route",
+};
