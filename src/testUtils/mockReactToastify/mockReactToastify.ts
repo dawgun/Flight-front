@@ -1,3 +1,8 @@
+const mockToastify = {
+  success: vi.fn(),
+  error: vi.fn(),
+};
+
 vi.mock("react-toastify", async () => {
   const toastify = await vi.importActual<typeof import("react-toastify")>(
     "react-toastify"
@@ -7,8 +12,10 @@ vi.mock("react-toastify", async () => {
     ...toastify,
     toast: {
       ...toastify.toast,
-      success: vi.fn(),
-      error: vi.fn(),
+      success: mockToastify.success,
+      error: mockToastify.error,
     },
   };
 });
+
+export default mockToastify;
