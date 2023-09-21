@@ -12,6 +12,7 @@ import useServerStreamStore from "../../store/useServerStreamStore/useServerStre
 import useGetFlightPosition from "../../hooks/useGetFlightPosition/useGetFlightPosition.js";
 import play from "/assets/play-button.svg";
 import stop from "/assets/stop-button.svg";
+import pause from "/assets/pause-button.svg";
 import "leaflet/dist/leaflet.css";
 import "./LeafletMap.css";
 
@@ -20,7 +21,8 @@ interface MapProps {
 }
 
 function LeafletMap({ flight }: MapProps) {
-  const { startTrackFlight, stopTrackFlight } = useGetFlightPosition();
+  const { startTrackFlight, stopTrackFlight, pauseTrackFlight } =
+    useGetFlightPosition();
   const { planePosition, setPlanePosition, eventSource } =
     useServerStreamStore();
 
@@ -70,6 +72,10 @@ function LeafletMap({ flight }: MapProps) {
     }
   };
 
+  const pauseFlightHandler = () => {
+    pauseTrackFlight(flightID);
+  };
+
   return (
     <div className={"map-container"}>
       <button onClick={startFlightHandler}>
@@ -77,6 +83,9 @@ function LeafletMap({ flight }: MapProps) {
       </button>
       <button onClick={stopFlightHandler}>
         <img src={stop} height={30} width={30} alt={"stop icon"}></img>
+      </button>
+      <button onClick={pauseFlightHandler}>
+        <img src={pause} height={30} width={30} alt={"pause icon"}></img>
       </button>
       <MapContainer
         ref={(map) => {
