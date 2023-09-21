@@ -13,7 +13,7 @@ interface FlightItineraryProps {
 
 function FlightItinerary({ flight }: FlightItineraryProps) {
   const { selectFlight, selectedFlight, updateFlight } = useFlightsStore();
-  const { eventSource } = useServerStreamStore();
+  const { eventSource, stopPlay } = useServerStreamStore();
   const { pauseTrackFlight } = useGetFlightPosition();
 
   const {
@@ -32,6 +32,7 @@ function FlightItinerary({ flight }: FlightItineraryProps) {
       const newPosition = await pauseTrackFlight(flight.id);
       if (newPosition !== undefined) {
         updateFlight(flight.id, newPosition);
+        stopPlay();
       }
     }
     selectFlight(flight);
