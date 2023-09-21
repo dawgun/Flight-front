@@ -57,7 +57,7 @@ describe("GIVEN the custom hook useGetFlightPosition", () => {
     });
   });
 
-  describe("WHEN call the stopFlight function with flight id '111'", () => {
+  describe("WHEN call the stopTrackFlight function with flight id '111'", () => {
     test("THEN should call eventSource.close function", async () => {
       const flightId = "111";
       const store = mockServerStreamStore({});
@@ -80,9 +80,19 @@ describe("GIVEN the custom hook useGetFlightPosition", () => {
 
       expect(newPlanePosition).toStrictEqual(expectNewPlanePosition);
     });
+
+    test("THEN should call toast success with 'Stopped tracking flight 111'", async () => {
+      const flightId = "111";
+      const expectedError = `Stopped tracking flight ${flightId}`;
+
+      const { result } = renderHook(() => useGetFlightPosition());
+      await result.current.stopTrackFlight(flightId);
+
+      expect(mockToastify.success).toHaveBeenCalledWith(expectedError);
+    });
   });
 
-  describe("WHEN call the stopFlight function with flight id '112'", () => {
+  describe("WHEN call the stopTrackFlight function with flight id '112'", () => {
     test("THEN shouldn't call eventSource.close function", async () => {
       const flightId = "112";
       const store = mockServerStreamStore({});
@@ -109,6 +119,73 @@ describe("GIVEN the custom hook useGetFlightPosition", () => {
 
       const { result } = renderHook(() => useGetFlightPosition());
       await result.current.stopTrackFlight(flightId);
+
+      expect(mockToastify.error).toHaveBeenCalledWith(expectedError);
+    });
+  });
+
+  describe("WHEN call the pauseTrackFlight function with flight id '111'", () => {
+    test("THEN should call eventSource.close function", async () => {
+      const flightId = "111";
+      const { eventSource } = mockServerStreamStore({});
+
+      const { result } = renderHook(() => useGetFlightPosition());
+      await result.current.pauseTrackFlight(flightId);
+
+      expect(eventSource.close).toHaveBeenCalled();
+    });
+
+    test("THEN should return a new position", async () => {
+      const flightId = "111";
+      const expectNewPosition = {
+        longitude: flightMSW.airplane.longitude,
+        latitude: flightMSW.airplane.latitude,
+      };
+
+      const { result } = renderHook(() => useGetFlightPosition());
+      const newPosition = await result.current.pauseTrackFlight(flightId);
+
+      expect(newPosition).toStrictEqual(expectNewPosition);
+    });
+
+    test("THEN should call toast success with 'Paused tracking flight 111'", async () => {
+      const flightId = "111";
+      const expectedError = `Paused tracking flight ${flightId}`;
+
+      const { result } = renderHook(() => useGetFlightPosition());
+      await result.current.pauseTrackFlight(flightId);
+
+      expect(mockToastify.success).toHaveBeenCalledWith(expectedError);
+    });
+  });
+
+  describe("WHEN call the pauseTrackFlight function with flight id '112'", () => {
+    test("THEN shouldn't call eventSource.close function", async () => {
+      const flightId = "112";
+      const { eventSource } = mockServerStreamStore({});
+
+      const { result } = renderHook(() => useGetFlightPosition());
+      await result.current.pauseTrackFlight(flightId);
+
+      expect(eventSource.close).not.toHaveBeenCalled();
+    });
+
+    test("THEN should return error with message 'Error starting Flight'", async () => {
+      const flightId = "112";
+      const expectedError = `Error pause tracking flight ${flightId}`;
+
+      const { result } = renderHook(() => useGetFlightPosition());
+      await result.current.pauseTrackFlight(flightId);
+
+      expect(mockToastify.error).toHaveBeenCalledWith(expectedError);
+    });
+
+    test("THEN should return error with message 'Error getting flight position'", async () => {
+      const flightId = "113";
+      const expectedError = `Error getting position flight ${flightId}`;
+
+      const { result } = renderHook(() => useGetFlightPosition());
+      await result.current.pauseTrackFlight(flightId);
 
       expect(mockToastify.error).toHaveBeenCalledWith(expectedError);
     });
