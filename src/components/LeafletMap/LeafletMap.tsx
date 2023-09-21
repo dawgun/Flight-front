@@ -24,8 +24,14 @@ interface MapProps {
 function LeafletMap({ flight }: MapProps) {
   const { startTrackFlight, stopTrackFlight, pauseTrackFlight } =
     useGetFlightPosition();
-  const { planePosition, setPlanePosition, eventSource } =
-    useServerStreamStore();
+  const {
+    planePosition,
+    setPlanePosition,
+    eventSource,
+    isPlayed,
+    runPlay,
+    stopPlay,
+  } = useServerStreamStore();
   const { updateFlight } = useFlightsStore();
 
   const [mapLeaflet, setMapLeaflet] = useState({} as L.Map);
@@ -65,6 +71,7 @@ function LeafletMap({ flight }: MapProps) {
 
   const startFlightHandler = () => {
     startTrackFlight(flightID);
+    runPlay();
   };
 
   const stopFlightHandler = async () => {
@@ -72,6 +79,7 @@ function LeafletMap({ flight }: MapProps) {
     if (newPosition !== undefined) {
       setPlanePosition([newPosition.latitude, newPosition.longitude]);
       updateFlight(flightID, newPosition);
+      stopPlay();
     }
   };
 
@@ -79,18 +87,19 @@ function LeafletMap({ flight }: MapProps) {
     const newPosition = await pauseTrackFlight(flightID);
     if (newPosition !== undefined) {
       updateFlight(flightID, newPosition);
+      stopPlay();
     }
   };
 
   return (
     <div className={"map-container"}>
-      <button onClick={startFlightHandler}>
+      <button onClick={startFlightHandler} disabled={isPlayed}>
         <img src={play} height={30} width={30} alt={"play icon"}></img>
       </button>
-      <button onClick={stopFlightHandler}>
+      <button onClick={stopFlightHandler} disabled={!isPlayed}>
         <img src={stop} height={30} width={30} alt={"stop icon"}></img>
       </button>
-      <button onClick={pauseFlightHandler}>
+      <button onClick={pauseFlightHandler} disabled={!isPlayed}>
         <img src={pause} height={30} width={30} alt={"pause icon"}></img>
       </button>
       <MapContainer

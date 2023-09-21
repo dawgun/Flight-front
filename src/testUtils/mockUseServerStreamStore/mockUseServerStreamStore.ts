@@ -9,12 +9,16 @@ mockEventSource.close = vi.fn();
 
 const mockUseServerStreamStore = (
   planePosition: LatLngTuple,
-  eventSource: EventSource
+  eventSource: EventSource,
+  isPlayed: boolean
 ): ServerStreamStore => ({
   eventSource,
   planePosition,
+  isPlayed,
   startFlight: vi.fn(),
   setPlanePosition: vi.fn(),
+  runPlay: vi.fn(),
+  stopPlay: vi.fn(),
 });
 
 const originalStore = useServerStreamStore.getState();
@@ -24,8 +28,9 @@ export const resetServerStreamStore = () =>
 export const mockServerStreamStore = ({
   planePosition = [0, 0],
   eventSource = mockEventSource,
+  isPlayed = false,
 }: Omit<Partial<ServerStreamStore>, "setPlanePosition">) => {
-  const store = mockUseServerStreamStore(planePosition, eventSource);
+  const store = mockUseServerStreamStore(planePosition, eventSource, isPlayed);
   useServerStreamStore.setState(store);
   return store;
 };
