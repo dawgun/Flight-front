@@ -9,17 +9,18 @@ import { LatLngTuple } from "leaflet";
 import { useRef, useEffect, useState } from "react";
 import { Spline, spline } from "leaflet-spline";
 import useServerStreamStore from "../../store/useServerStreamStore/useServerStreamStore.js";
+import useGetFlightPosition from "../../hooks/useGetFlightPosition/useGetFlightPosition.js";
 import play from "/assets/play-button.svg";
+import stop from "/assets/stop-button.svg";
 import "leaflet/dist/leaflet.css";
 import "./LeafletMap.css";
-import useGetFlightPosition from "../../hooks/useGetFlightPosition/useGetFlightPosition.js";
 
 interface MapProps {
   flight: Flight;
 }
 
 function LeafletMap({ flight }: MapProps) {
-  const { startTrackFlight } = useGetFlightPosition();
+  const { startTrackFlight, stopTrackFlight } = useGetFlightPosition();
   const { planePosition, setPlanePosition, eventSource } =
     useServerStreamStore();
 
@@ -62,10 +63,20 @@ function LeafletMap({ flight }: MapProps) {
     startTrackFlight(flightID);
   };
 
+  const stopFlightHandler = async () => {
+    const newPosition = await stopTrackFlight(flightID);
+    if (newPosition !== undefined) {
+      setPlanePosition([newPosition.latitude, newPosition.longitude]);
+    }
+  };
+
   return (
     <div className={"map-container"}>
       <button onClick={startFlightHandler}>
         <img src={play} height={30} width={30} alt={"play icon"}></img>
+      </button>
+      <button onClick={stopFlightHandler}>
+        <img src={stop} height={30} width={30} alt={"stop icon"}></img>
       </button>
       <MapContainer
         ref={(map) => {
