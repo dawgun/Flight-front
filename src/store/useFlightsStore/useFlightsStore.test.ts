@@ -29,3 +29,27 @@ describe("GIVEN the function reducer selectFlight", () => {
     });
   });
 });
+
+describe("GIVEN the function reducer updateFlight", () => {
+  describe("WHEN it's called with a flight id and new position", () => {
+    test("THEN should return the same state with flight position updated", () => {
+      const flights = mockFlight();
+      const flightId = flights.id;
+      const newFlightPosition = { longitude: 12.34, latitude: 43.21 };
+
+      useFlightsStore.getState().loadFlights([flights]);
+      useFlightsStore.getState().updateFlight(flightId, newFlightPosition);
+
+      const flightsWithPositionUpdated = useFlightsStore.getState().flights;
+
+      expect(flightsWithPositionUpdated[0].airplane).toHaveProperty(
+        "longitude",
+        newFlightPosition.longitude
+      );
+      expect(flightsWithPositionUpdated[0].airplane).toHaveProperty(
+        "latitude",
+        newFlightPosition.latitude
+      );
+    });
+  });
+});
