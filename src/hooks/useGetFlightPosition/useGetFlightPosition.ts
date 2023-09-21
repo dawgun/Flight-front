@@ -1,3 +1,4 @@
+import { Waypoint } from "../../store/useFlightsStore/types/flightTypes.ts";
 import useServerStreamStore from "../../store/useServerStreamStore/useServerStreamStore.ts";
 import { toast } from "react-toastify";
 
@@ -26,7 +27,9 @@ const useGetFlightPosition = () => {
     }
   };
 
-  const stopTrackFlight = async (flightId: string) => {
+  const stopTrackFlight = async (
+    flightId: string
+  ): Promise<Waypoint | undefined> => {
     try {
       const responseStop = await fetch(`${backend}/flights/${flightId}/stop`, {
         method: "PUT",
@@ -59,7 +62,9 @@ const useGetFlightPosition = () => {
     }
   };
 
-  const pauseTrackFlight = async (flightId: string) => {
+  const pauseTrackFlight = async (
+    flightId: string
+  ): Promise<Waypoint | undefined> => {
     try {
       const responsePause = await fetch(
         `${backend}/flights/${flightId}/pause`,

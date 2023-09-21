@@ -4,13 +4,17 @@ import useFlightsStore from "../../store/useFlightsStore/useFlightsStore.ts";
 import clock from "/assets/clock.svg";
 import arrows from "/assets/arrows.svg";
 import "./FlightItinerary.css";
+import useServerStreamStore from "../../store/useServerStreamStore/useServerStreamStore.ts";
+import useGetFlightPosition from "../../hooks/useGetFlightPosition/useGetFlightPosition.ts";
 
 interface FlightItineraryProps {
   flight: Flight;
 }
 
 function FlightItinerary({ flight }: FlightItineraryProps) {
-  const { selectFlight, selectedFlight } = useFlightsStore();
+  const { selectFlight, selectedFlight, updateFlight } = useFlightsStore();
+  const { eventSource } = useServerStreamStore();
+  const { pauseTrackFlight } = useGetFlightPosition();
 
   const {
     route: { airports },
@@ -23,7 +27,13 @@ function FlightItinerary({ flight }: FlightItineraryProps) {
     selectedFlight?.id === flight?.id ? " flight--selected" : "";
   const destinationAirport = airports[airports.length - 1]?.city;
 
-  const handlerSelectFlight = () => {
+  const handlerSelectFlight = async () => {
+    if (eventSource?.url?.includes("stream")) {
+      const newPosition = await pauseTrackFlight(flight.id);
+      if (newPosition !== undefined) {
+        updateFlight(flight.id, newPosition);
+      }
+    }
     selectFlight(flight);
   };
 

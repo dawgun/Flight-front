@@ -1,3 +1,6 @@
+import mockUseGetFlightPosition from "../../testUtils/mockUseGetFlightPosition/mockUseGetFlightPosition.ts";
+import { mockServerStreamStore } from "../../testUtils/mockUseServerStreamStore/mockUseServerStreamStore.ts";
+import { mockFlightStore } from "../../testUtils/mockUseFlightsStore/mockUseFlightsStore.ts";
 import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import {
@@ -6,7 +9,6 @@ import {
   mockCustomFlight,
 } from "../../testUtils/mockFlight/mockFlight.ts";
 import FlightItinerary from "./FlightItinerary.tsx";
-import { mockFlightStore } from "../../testUtils/mockUseFlightsStore/mockUseFlightsStore.ts";
 
 describe("GIVEN the FlightItinerary component", () => {
   describe("WHEN it's instanced with a flight", () => {
@@ -115,6 +117,64 @@ describe("GIVEN the FlightItinerary component", () => {
         const flightItinerary = screen.getByTestId(divContainerId);
 
         expect(flightItinerary).toHaveStyle("background-color: #fff");
+      });
+    });
+
+    describe("AND user click in the itinerary with inactive server event", () => {
+      test("THEN shouldn't call the stopFlight function with id flight", async () => {
+        const flight = mockFlight();
+        mockUseGetFlightPosition;
+        const divContainerId = "flight-itinerary";
+
+        render(<FlightItinerary flight={flight} />);
+
+        const flightItinerary = screen.getByTestId(divContainerId);
+        await userEvent.click(flightItinerary);
+
+        expect(
+          mockUseGetFlightPosition.pauseTrackFlight
+        ).not.toHaveBeenCalled();
+      });
+    });
+
+    describe("AND user click in the itinerary with active server event", () => {
+      test("THEN should call the stopFlight function with id flight", async () => {
+        const flight = mockFlight();
+        const newEventSource = new EventSource("stream");
+        mockServerStreamStore({ eventSource: newEventSource });
+
+        const divContainerId = "flight-itinerary";
+        const expectedId = flight.id;
+
+        render(<FlightItinerary flight={flight} />);
+
+        const flightItinerary = screen.getByTestId(divContainerId);
+        await userEvent.click(flightItinerary);
+
+        expect(mockUseGetFlightPosition.pauseTrackFlight).toHaveBeenCalledWith(
+          expectedId
+        );
+      });
+
+      test("THEN should call the updateFlight function with id flight", async () => {
+        const flight = mockFlight();
+        const newEventSource = new EventSource("stream");
+        mockServerStreamStore({ eventSource: newEventSource });
+        const { updateFlight } = mockFlightStore({});
+
+        const divContainerId = "flight-itinerary";
+        const expectedPosition = {
+          latitude: 1,
+          longitude: 2,
+        };
+        const expectedId = flight.id;
+
+        render(<FlightItinerary flight={flight} />);
+
+        const flightItinerary = screen.getByTestId(divContainerId);
+        await userEvent.click(flightItinerary);
+
+        expect(updateFlight).toHaveBeenCalledWith(expectedId, expectedPosition);
       });
     });
   });

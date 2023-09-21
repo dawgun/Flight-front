@@ -15,6 +15,7 @@ import stop from "/assets/stop-button.svg";
 import pause from "/assets/pause-button.svg";
 import "leaflet/dist/leaflet.css";
 import "./LeafletMap.css";
+import useFlightsStore from "../../store/useFlightsStore/useFlightsStore.js";
 
 interface MapProps {
   flight: Flight;
@@ -25,6 +26,7 @@ function LeafletMap({ flight }: MapProps) {
     useGetFlightPosition();
   const { planePosition, setPlanePosition, eventSource } =
     useServerStreamStore();
+  const { updateFlight } = useFlightsStore();
 
   const [mapLeaflet, setMapLeaflet] = useState({} as L.Map);
   const splineRef = useRef({} as Spline);
@@ -69,11 +71,15 @@ function LeafletMap({ flight }: MapProps) {
     const newPosition = await stopTrackFlight(flightID);
     if (newPosition !== undefined) {
       setPlanePosition([newPosition.latitude, newPosition.longitude]);
+      updateFlight(flightID, newPosition);
     }
   };
 
-  const pauseFlightHandler = () => {
-    pauseTrackFlight(flightID);
+  const pauseFlightHandler = async () => {
+    const newPosition = await pauseTrackFlight(flightID);
+    if (newPosition !== undefined) {
+      updateFlight(flightID, newPosition);
+    }
   };
 
   return (

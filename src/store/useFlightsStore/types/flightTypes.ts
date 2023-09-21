@@ -3,6 +3,7 @@ export interface FlightStore {
   selectedFlight: Flight;
   loadFlights: (flights: Flight[]) => void;
   selectFlight: (flight: Flight) => void;
+  updateFlight: (flightId: string, planePosition: Waypoint) => void;
 }
 
 export interface Flight {
