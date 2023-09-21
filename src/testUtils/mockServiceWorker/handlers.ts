@@ -45,6 +45,18 @@ export const handlers = [
     return res(ctx.status(400));
   }),
 
+  rest.put(`${backend}/flights/111/pause`, async (_req, res, ctx) => {
+    return res(ctx.status(200));
+  }),
+
+  rest.put(`${backend}/flights/113/pause`, async (_req, res, ctx) => {
+    return res(ctx.status(200));
+  }),
+
+  rest.put(`${backend}/flights/112/pause`, async (_req, res, ctx) => {
+    return res(ctx.status(400));
+  }),
+
   rest.get(`${backend}/flights/111`, async (_req, res, ctx) => {
     return res(ctx.status(200), ctx.json(flightMSW));
   }),

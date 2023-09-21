@@ -59,7 +59,42 @@ const useGetFlightPosition = () => {
     }
   };
 
-  return { startTrackFlight, stopTrackFlight };
+  const pauseTrackFlight = async (flightId: string) => {
+    try {
+      const responsePause = await fetch(
+        `${backend}/flights/${flightId}/pause`,
+        {
+          method: "PUT",
+        }
+      );
+
+      if (!responsePause.ok) {
+        throw new Error(`Error pause tracking flight ${flightId}`);
+      }
+      eventSource.close();
+
+      const responseGetPositionFlight = await fetch(
+        `${backend}/flights/${flightId}`
+      );
+
+      if (!responseGetPositionFlight.ok) {
+        throw new Error(`Error getting position flight ${flightId}`);
+      }
+
+      const flightUpdated = await responseGetPositionFlight.json();
+
+      toast.success(`Paused tracking flight ${flightId}`);
+
+      return {
+        longitude: flightUpdated.airplane.longitude,
+        latitude: flightUpdated.airplane.latitude,
+      };
+    } catch (error) {
+      toast.error((error as Error).message);
+    }
+  };
+
+  return { startTrackFlight, stopTrackFlight, pauseTrackFlight };
 };
 
 export default useGetFlightPosition;
