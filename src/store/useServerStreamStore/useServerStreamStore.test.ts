@@ -26,3 +26,25 @@ describe("GIVEN the function reducer startFlight", () => {
     });
   });
 });
+
+describe("GIVEN the function reducer runPlay", () => {
+  describe("WHEN it's called", () => {
+    test("THEN should return the same state with isPlayed to be 'true'", () => {
+      useServerStreamStore.getState().runPlay();
+      const newIsPlayed = useServerStreamStore.getState().isPlayed;
+
+      expect(newIsPlayed).toBe(true);
+    });
+  });
+});
+
+describe("GIVEN the function reducer stopPlay", () => {
+  describe("WHEN it's called", () => {
+    test("THEN should return the same state with isPlayed to be 'false'", () => {
+      useServerStreamStore.getState().stopPlay();
+      const newIsPlayed = useServerStreamStore.getState().isPlayed;
+
+      expect(newIsPlayed).toBe(false);
+    });
+  });
+});
