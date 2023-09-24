@@ -1,0 +1,40 @@
+name: Build and Push Docker Image
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build-and-push:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Create .env File
+        run: |
+          echo "VITE_BACKEND_HOST=${{ secrets.VITE_BACKEND_HOST }}" > .env
+        shell: bash
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Build Docker image
+        run: |
+          docker buildx create --use
+          docker buildx inspect default --bootstrap
+          docker build -t ${{ github.repository }}:latest .
+        env:
+          DOCKER_CLI_ACI_OFF: "1"
+          DOCKER_BUILDKIT: "1"
+
+      - name: Login to Docker Hub
+        run: docker login -u ${{ secrets.DOCKERHUB_USERNAME }} -p ${{ secrets.DOCKERHUB_PASSWORD }}
+
+      - name: Push Docker image
+        run: docker push ${{ github.repository }}:latest
+
+      - name: Logout from Docker Hub
+        run: docker logout
